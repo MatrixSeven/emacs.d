@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "hugsql-ghosts" "hugsql-ghosts.el" (22938 31219
+;;;### (autoloads nil "hugsql-ghosts" "hugsql-ghosts.el" (22953 26632
 ;;;;;;  0 0))
 ;;; Generated autoloads from hugsql-ghosts.el
 

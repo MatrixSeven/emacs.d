@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "monroe" "monroe.el" (22934 42747 0 0))
+;;;### (autoloads nil "monroe" "monroe.el" (22953 26429 0 0))
 ;;; Generated autoloads from monroe.el
 
 (autoload 'monroe-interaction-mode "monroe" "\
