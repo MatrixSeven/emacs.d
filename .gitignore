@@ -1,3 +1,14 @@
-elpa/
 .DS_Store
-auto-save-list/
+auto-save-list
+elpa
+eshell
+profile-dotemacs.el
+projectile-bookmarks.eld
+recentf
+semanticdb
+README.el
+PRIVATE.el
+PRIVATE.org
+tramp
+*~
+ac-comphist.dat
