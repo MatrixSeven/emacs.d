@@ -1,0 +1,1 @@
+("~/IdeaProjects/lottery-activity/" "~/IdeaProjects/lottery-message-center/" "~/IdeaProjects/Emacs_clojure/" "~/IdeaProjects/lottery-alg-clj/")
