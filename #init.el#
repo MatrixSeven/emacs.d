@@ -15,7 +15,7 @@
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
-  (package-install 'use-package))
+  xxxxxxx  (package-install 'use-package))
 
 ;;默认文件编码
 (prefer-coding-system 'utf-8)
