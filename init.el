@@ -20,8 +20,12 @@
 ;;默认文件编码
 (prefer-coding-system 'utf-8)
 
-;;修改mac的comm按键为super
+;;修改mac的comm按键为super按键
 (setq mac-command-modifier 'super)
+;;绑定alt为emta按键
+(setq mac-option-modifier 'meta)
+;;;绑定control为c按键
+(setq mac-control-modifier 'control)
 
 ;;设置各种文件编码
 (setq buffer-file-coding-system 'utf-8-unix
@@ -74,6 +78,7 @@
 (bind-key "s-x" 'kill-region global-map)
 (bind-key "s-e" 'switch-to-buffer global-map)
 (bind-key "s-w" 'kill-buffer global-map)
+(bind-key "s-z" 'undo global-map)
 (bind-key "<escape>" 'keyboard-escape-quit global-map)
 
 
@@ -83,6 +88,8 @@
   :init
   (projectile-mode))
 
+;;设置行高
+(setq line-spacing 3)
 
 (use-package counsel
   :ensure t
@@ -125,17 +132,35 @@
   :bind
   (("s-\\" . neotree-toggle)))
 
-
+;;状态栏
+(setq ns-use-srgb-colorspace nil)
 ;;主题
 (use-package monokai-theme
   :ensure t)
+;;主题
+(use-package jazz-theme
+  :ensure t)
 
+(use-package solarized-theme
+  :ensure t)
+
+(use-package spacemacs-theme
+  :ensure t)
+
+(use-package atom-one-dark-theme
+  :ensure)
 
 (use-package zenburn-theme
   :ensure t
   :init
   (load-theme 'zenburn t))
 
+
+;;状态栏//smart mode line
+(use-package powerline
+  :ensure t
+  :init
+  (powerline-center-theme))
 ;;括号
 (use-package paredit
   :ensure t
@@ -151,9 +176,11 @@
 ;;clojure repl支持
 (use-package cider
   :ensure t
-  :bind
+  :bind 
   (:map cider-mode-map
-        ("C-c <tab>" . cider-inspect-last-result))
+        ("C-c <tab>" . cider-inspect-last-result)
+        ("<s-return>" .  cider-eval-last-sexp) 
+        ("<C-return>" .  cider-eval-defun-at-point))
   :init
   (setq cider-prompt-for-symbol nil)
   (setq cider-lein-command "/usr/local/bin/lein"))
@@ -207,8 +234,6 @@
             (lambda ()
               (setq org-src-ask-before-returning-to-edit-buffer nil)
               (org-indent-mode 1))))
-(use-package org-plus-contrib
-  :ensure t)
 
 (setq org-ellipsis "⤵")
 (use-package org-bullets
@@ -255,15 +280,6 @@
   (setq company-idle-delay nil)
   (global-company-mode 1))
 
-(defun my/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
-
-(use-package company-jedi
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook #'my/python-mode-hook)
-  )
-
 (use-package magit
   :ensure t
   :bind
@@ -272,33 +288,37 @@
   (setq magit-completing-read-function 'ivy-completing-read)
   (global-magit-file-mode t))
 
-(use-package hugsql-ghosts
-  :ensure t
-  :init
-  (add-hook 'cider-mode-hook 'hugsql-ghosts-install-hook) 
-  )
 
-;;(add-to-list 'load-path (expand-file-name "." user-emacs-directory))
-
-
-;;(require 'init-python)
-
+;;设置备份文件
 (setq backup-directory-alist `(("." . "~/.backup")))
-
 (setq backup-by-copying t)
-
 (setq delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
       version-control t)
+;;去除烦人的备份
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
-;; Set font
-(when window-system)
-(set-fontset-font
- (frame-parameter nil 'font)
- 'han
- (font-spec :family "Hiragino Sans GB"))
+;;补全
+(use-package yasnippet
+  :ensure t
+  :init
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  :config
+  (unbind-key "<tab>" yas-minor-mode-map)
+  (unbind-key "TAB" yas-minor-mode-map))
 
+
+;;////////=_= 热加载依赖,and so...
+(use-package clj-refactor
+  :ensure t
+  :init
+  (cljr-add-keybindings-with-prefix "C-,")
+  (add-hook 'clojure-mode-hook #'clj-refactor-mode)
+  (add-hook 'clojure-mode-hook #'yas-minor-mode))
 
 ;;透明度
 (global-set-key (kbd "<f10>") 'loop-alpha)
@@ -312,32 +332,67 @@
        ) (car h) (car (cdr h)))  
     (setq alpha-list (cdr (append alpha-list (list h))))))
 
+(set-default-font "MonoxLight-18")
 
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default default default italic underline success warning error])
- '(ansi-term-color-vector
-   [unspecified "#fdf6e3" "#dc322f" "#859900" "#b58900" "#268bd2" "#6c71c4" "#268bd2" "#586e75"])
- '(custom-safe-themes
-   (quote
-    ("12670281275ea7c1b42d0a548a584e23b9c4e1d2dabb747fd5e2d692bcd0d39b" "e1498b2416922aa561076edc5c9b0ad7b34d8ff849f335c13364c8f4276904f0" "80930c775cef2a97f2305bae6737a1c736079fdcc62a6fdf7b55de669fbbcd13" "3de3f36a398d2c8a4796360bfce1fa515292e9f76b655bb9a377289a6a80a132" "4bf5c18667c48f2979ead0f0bdaaa12c2b52014a6abaa38558a207a65caeb8ad" "840db7f67ce92c39deb38f38fbc5a990b8f89b0f47b77b96d98e4bf400ee590a" "264b639ee1d01cd81f6ab49a63b6354d902c7f7ed17ecf6e8c2bd5eb6d8ca09c" "f984e2f9765a69f7394527b44eaa28052ff3664a505f9ec9c60c088ca4e9fc0b" "b0c5c6cc59d530d3f6fbcfa67801993669ce062dda1435014f74cafac7d86246" "1d079355c721b517fdc9891f0fda927fe3f87288f2e6cc3b8566655a64ca5453" "b67b2279fa90e4098aa126d8356931c7a76921001ddff0a8d4a0541080dee5f6" "6145e62774a589c074a31a05dfa5efdf8789cf869104e905956f0cbd7eda9d0e" "25c242b3c808f38b0389879b9cba325fb1fa81a0a5e61ac7cae8da9a32e2811b" "b3bcf1b12ef2a7606c7697d71b934ca0bdd495d52f901e73ce008c4c9825a3aa" "3629b62a41f2e5f84006ff14a2247e679745896b5eaa1d5bcfbc904a3441b0cd" "ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" default)))
- '(nrepl-message-colors
-   (quote
-    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
- '(package-selected-packages
-   (quote
-    (minimap js2-mode base16-theme molokai-theme monokai-theme monokai org-bullets company-jedi counsel-projectile InsideDotNet solarized-dark color-theme-solarized dracula-theme dracula molokai subtle-hacker solarized SOLARIZED ag git-gutter monroe rainbow-delimiters ace-window aggressive-indent projectile neotree exec-path-from-shell ivy cider clojure-mode zenburn-theme paredit company use-package)))
- '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838"))))
+;;xwindowd窗口提示大小
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(aw-leading-char-face ((t (:foreground "green" :weight normal :height 4.5))))
+ '(mode-line ((t (:foreground "#030303" :background "#bdbdbd" :box nil))))
+ '(mode-line-inactive ((t (:foreground "#f9f9f9" :background "#666666" :box nil)))))
+
 (put 'dired-find-alternate-file 'disabled nil)
+
+;;删除文件
+(defun delete-file-and-buffer ()
+  "Kill the current buffer and deletes the file it is visiting."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (when filename
+      (if (vc-backend filename)
+          (vc-delete-file filename)
+        (progn
+          (delete-file filename)
+          (message "Deleted file %s" filename)
+          (kill-buffer))))))
+;;绑定删除快捷键
+(global-set-key (kbd "C-c D")  'delete-file-and-buffer)
+
+
+;;状态栏配色
+(defun graphic-powerline-config ()
+  "powerline setting for graphic"
+  (interactive)
+  (progn
+    (setq powerline-arrow-shape 'arrow)
+    (custom-set-faces
+     '(mode-line ((t (:foreground "white" :background "#0044cc" :box nil))))
+     '(mode-line-inactive ((t (:foreground "white" :background "#262626" :box nil))))
+     )
+    (setq powerline-color1 "#0088cc")
+    (setq powerline-color2 "white")
+    )
+  )
+;;状态栏配色
+(defun terminal-powerline-config()
+  " powerline setting for terminal"
+  (interactive)
+  (setq powerline-arrow-shape 'arrow)
+  (setq powerline-color1 "grey22")
+  (setq powerline-color2 "grey22") 
+  (custom-set-faces
+   '(mode-line ((t (:foreground "grey44" :background "grey22" :box nil))))
+   '(mode-line-inactive ((t (:foreground "grey22" :background "grey44" :box nil))))
+   ))
+(graphic-powerline-config)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("a4c9e536d86666d4494ef7f43c84807162d9bd29b0dfd39bdf2c3d845dcc7b2e" default))))
