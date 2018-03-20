@@ -1,0 +1,3 @@
+(
+ (:id "sha1:fb978c85c0cf3c9d62d497157827b311f7197e87" :fingerprint "sha1:fc:11:1d:55:ea:1f:bc:ea:36:ff:1c:04:0c:42:ca:e3:3d:57:89:df" :host "www.gnu.org:443" :conditions (:insecure :unknown-ca :invalid))
+)

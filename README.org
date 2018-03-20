@@ -286,7 +286,26 @@
     (setq company-idle-delay nil)
     (global-company-mode 1))
 #+END_SRC
-* Git相关
+** 的Parinfer
+#+BEGIN_SRC emacs-lisp
+  ;; (add-to-list 'load-path
+  ;;              (expand-file-name "~/.emacs.d/misc"))
+  ;; (require 'parinfer)
+  ;; (bind-key "C-)" 'paredit-forward-slurp-sexp parinfer-mode-map)
+  ;; (bind-key "C-}" 'paredit-forward-barf-sexp parinfer-mode-map)
+  ;; (bind-key "M-r" 'paredit-raise-sexp parinfer-mode-map)
+  ;; (add-hook 'clojure-mode-hook #'parinfer-mode)
+#+END_SRC
+* Python相关
+** Elpy插件
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+    :ensure t)
+  (setq elpy-rpc-backend "jedi")
+  (define-key yas-minor-mode-map (kbd "C-c k") 'yas-expand)
+  (elpy-enable)
+#+END_SRC
+~* Git相关
 ** Magit
 #+BEGIN_SRC emacs-lisp
   (use-package magit
@@ -356,15 +375,17 @@
 ** 字体
 #+BEGIN_SRC emacs-lisp
   (set-default-font "MonoxExtraLight-21")
+  ;; (set-default-font "Comic Sans MS-18")
 #+END_SRC
 ** 主题
 #+BEGIN_SRC emacs-lisp
-  (use-package solarized-theme
+  (use-package solarizped-theme
     :ensure t)
 
   (use-package atom-one-dark-theme
     :ensure)
-
+  (use-package challenger-deep-theme
+    :ensure)
   (use-package zenburn-theme
     :ensure t
     :init
@@ -374,8 +395,8 @@
 ** 自动插入elisp标签
 #+BEGIN_SRC emacs-lisp
   (defun user/insert-emacs-lisp-src-block ()
-    (interactive)
-    (insert "#+BEGIN_SRC emacs-lisp\n\n#+END_SRC\n"))
+     (interactive)
+     (insert "#+BEGIN_SRC emacs-lisp\n\n#+END_SRC\n"))
 
   (bind-key "C-x C-'" #'user/insert-emacs-lisp-src-block)
 #+END_SRC
@@ -447,4 +468,10 @@
   ;;透明度
   (global-set-key (kbd "<f10>") 'loop-alpha)
   (setq alpha-list '((100 100) (95 65) (85 55) (75 45) (65 35)))
+#+END_SRC
+** 字体变化
+*** 其它
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-=") 'text-scale-increase)
+  (global-set-key (kbd "C--") 'text-scale-decrease)
 #+END_SRC
