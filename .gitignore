@@ -10,5 +10,10 @@ README.el
 PRIVATE.el
 PRIVATE.org
 tramp
+custom.el
+url
 *~
+projectile.cache
+projectile-bookmarks.eld
+network-security.data
 ac-comphist.dat
