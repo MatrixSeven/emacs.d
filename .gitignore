@@ -11,7 +11,9 @@ PRIVATE.el
 PRIVATE.org
 tramp
 custom.el
+./custom.el
 url
+.*data
 *~
 projectile.cache
 projectile-bookmarks.eld

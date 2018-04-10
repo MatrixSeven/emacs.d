@@ -379,9 +379,6 @@
 #+END_SRC
 ** 主题
 #+BEGIN_SRC emacs-lisp
-  (use-package solarizped-theme
-    :ensure t)
-
   (use-package atom-one-dark-theme
     :ensure)
   (use-package challenger-deep-theme
@@ -475,3 +472,5 @@
   (global-set-key (kbd "C-=") 'text-scale-increase)
   (global-set-key (kbd "C--") 'text-scale-decrease)
 #+END_SRC
+** 行长度提示
+#+BEGIN_SRC emacs-lisp

@@ -3,9 +3,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
+ '(custom-safe-themes
    (quote
-    (solarizped-theme zenburn-theme use-package solarized-theme rainbow-delimiters powerline org-bullets neotree monroe magit highlight-parentheses exec-path-from-shell elpy diminish diff-hl counsel-projectile clj-refactor challenger-deep-theme atom-one-dark-theme aggressive-indent ag ace-window)))
+    ("6dd2b995238b4943431af56c5c9c0c825258c2de87b6c936ee88d6bb1e577cb9" default)))
  '(tramp-syntax (quote default) nil (tramp)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
