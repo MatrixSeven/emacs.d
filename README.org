@@ -474,3 +474,5 @@
 #+END_SRC
 ** 行长度提示
 #+BEGIN_SRC emacs-lisp
+  (global-whitespace-mode 0)
+#+END_SRC
