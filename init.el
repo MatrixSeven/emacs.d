@@ -1,11 +1,10 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (setq package-archives
-      '(("gnu-cn" . "http://elpa.zilongshanren.com/gnu/")
-        ("melpa-cn" . "http://elpa.zilongshanren.com/melpa/")
-        ("melpa-stable-cn" . "http://elpa.zilongshanren.com/melpa-stable/")
-        ("marmalade-cn" . "http://elpa.zilongshanren.com/marmalade/")
-        ("org-cn" . "http://elpa.zilongshanren.com/org/")))
+      '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+        ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+        ("org" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+        ("marmalade" .  "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")))
 (package-initialize)
 
 ;; -----------------------------------------------------------------------------

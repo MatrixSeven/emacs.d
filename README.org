@@ -202,7 +202,7 @@
       (add-hook hook #'whitespace-mode))
     (add-hook 'before-save-hook #'whitespace-cleanup)
     :config
-    (setq whitespace-line-column 80)
+    (setq whitespace-line-column 800)
     (setq whitespace-style '(face tabs empty trailing lines-tail)))
 #+END_SRC
 ** Highlight-parentheses括号颜色
@@ -222,6 +222,27 @@
   (use-package clojure-mode
     :ensure t)
 #+END_SRC
+** Expand-region
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :bind
+    (("C-c C-v" . er/expand-region)))
+#+END_SRC
+
+** Easy-kill
+| 按键  | 功能           |
+|-------+----------------|
+| M-w d | 复制顶级表达式 |
+| M-w l | 复制当前表达式 |
+| M-w w | 复制当前词     |
+| M-w s | 复制当前符号   |
+#+BEGIN_SRC emacs-lisp
+  (use-package easy-kill
+    :ensure t
+    :init
+    (global-set-key [remap kill-ring-save] 'easy-kill))
+#+END_SRC
+
 ** Clojure-repl
 #+BEGIN_SRC emacs-lisp
   (use-package cider
@@ -286,7 +307,7 @@
     (setq company-idle-delay nil)
     (global-company-mode 1))
 #+END_SRC
-** 的Parinfer
+** Parinfer
 #+BEGIN_SRC emacs-lisp
   ;; (add-to-list 'load-path
   ;;              (expand-file-name "~/.emacs.d/misc"))
@@ -471,8 +492,9 @@
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-=") 'text-scale-increase)
   (global-set-key (kbd "C--") 'text-scale-decrease)
-#+END_SRC
-** 行长度提示
+#+END_S
+** eww默认搜索地址
 #+BEGIN_SRC emacs-lisp
-  (global-whitespace-mode 0)
+  (custom-set-variables
+   '(eww-search-prefix "https://www.baidu.com/s?wd="))
 #+END_SRC
