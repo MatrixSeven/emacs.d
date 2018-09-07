@@ -89,7 +89,7 @@
     :bind
     (("C-c g" . counsel-git)
      ("C-c G" . counsel-git-grep)
-     ("C-c C-s" . swiper)
+     ("C-s" . swiper)
      ("C-c m" . counsel-imenu)
      ("C-c A" . counsel-ag)
      :map ivy-minibuffer-map
@@ -114,10 +114,10 @@
 #+END_SRC
 ** Neotree目录树
 #+BEGIN_SRC emacs-lisp
-  (use-package neotree
-    :ensure t
-    :bind
-    (("s-\\" . neotree-toggle)))
+  ;; (use-package neotree
+  ;;   :ensure t
+  ;;   :bind
+  ;;   (("s-\\" . neotree-toggle)))
 #+END_SRC
 ** Powerline状态栏
 #+BEGIN_SRC emacs-lisp
@@ -216,6 +216,30 @@
     (add-hook 'clojure-mode-hook #'highlight-parentheses-mode)
     (add-hook 'emacs-lisp-mode-hook #'highlight-parentheses-mode))
 #+END_SRC
+** TREEMACS目录树
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load "treemacs"
+    (setq treemacs-icon-root (propertize "* " 'face 'treemacs-root-face)))
+
+  (defun user/toggle-treemacs ()
+    (interactive)
+    (if (fboundp 'treemacs-current-visibility)
+        (pcase (treemacs-current-visibility)
+          ('visible (treemacs-select-window))
+          ('exists (treemacs-select-window))
+          ('none (treemacs)))
+      (treemacs)))
+
+  (use-package treemacs
+    :ensure t
+    :bind
+    (("C-\\" . user/toggle-treemacs))
+    :init
+    (setq treemacs-no-png-images t)
+    :config
+    (treemacs-follow-mode 1))
+#+END_SRC
+
 * Clojure相关
 ** Clojrue-mode
 #+BEGIN_SRC emacs-lisp
@@ -395,7 +419,8 @@
 #+END_SRC
 ** 字体
 #+BEGIN_SRC emacs-lisp
-  (set-default-font "MonoxExtraLight-21")
+  (set-default-font "IBM 3270 Narrow-18")
+  ;; (set-default-font "MonoxExtraLight-21")
   ;; (set-default-font "Comic Sans MS-18")
 #+END_SRC
 ** 主题
@@ -492,9 +517,53 @@
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-=") 'text-scale-increase)
   (global-set-key (kbd "C--") 'text-scale-decrease)
-#+END_S
+#+END_SRC
 ** eww默认搜索地址
 #+BEGIN_SRC emacs-lisp
   (custom-set-variables
    '(eww-search-prefix "https://www.baidu.com/s?wd="))
+#+END_SRC
+** sql
+#+BEGIN_SRC emacs-lisp
+  ;; =============================================================================
+  ;; SQL
+  ;; =============================================================================
+
+  (defun user/uppercase-sql-keyword ()
+    (let ((init-pos (point)))
+      (when (member (char-before)
+                    '(41 40 44 59 32 10))
+        (save-mark-and-excursion
+          (backward-word)
+          (if (and (not (nth 3 (syntax-ppss)))
+                   (not (nth 4 (syntax-ppss)))
+                   (not (let ((face-or-faces (get-text-property (point) 'face)))
+                          (if (listp face-or-faces)
+                              (or (member 'font-lock-constant-face face-or-faces)
+                                  (member 'font-lock-variable-name-face face-or-faces))
+                            (or (eq 'font-lock-constant-face face-or-faces)
+                                (eq 'font-lock-variable-name-face face-or-faces))))))
+              (when (<= (save-mark-and-excursion
+                          (forward-word 1)
+                          (point))
+                        init-pos)
+                (upcase-word 1)))))))
+
+  (defun user/enable-sql-auto-uppercase-keyword ()
+    (interactive)
+    (add-hook 'post-self-insert-hook #'user/uppercase-sql-keyword t t)
+    (modify-syntax-entry ?_ "w" (syntax-table))
+    (modify-syntax-entry ?- "w" (syntax-table)))
+
+  (add-hook 'sql-mode-hook #'user/enable-sql-auto-uppercase-keyword)
+
+  ;;; Add keywords for sql fontlock
+  (font-lock-add-keywords
+   'sql-mode
+   '(;; For Postgres
+     ("\"[-a-zA-Z0-9]+\"" . font-lock-constant-face)
+     ;; For MySQL
+     ("`[-a-zA-z0-9]+`" . font-lock-constant-face)
+     ;; For placeholder
+     (":[-a-zA-Z0-9]+" . font-lock-variable-name-face)))
 #+END_SRC

@@ -1,4 +1,8 @@
 .DS_Store
+.cache/*
+tutorial/*
+tutorial
+.#README.org
 auto-save-list
 elpa
 eshell
