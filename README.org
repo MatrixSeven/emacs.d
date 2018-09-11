@@ -240,6 +240,22 @@
     (treemacs-follow-mode 1))
 #+END_SRC
 
+** winner-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package winner
+    :ensure t
+    :bind
+    (("C-h u" . winner-undo))
+    :init
+    (winner-mode))
+#+END_SRC
+** avy-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t
+    :bind
+    (("C-x j" . avy-goto-line)))
+#+END_SRC
 * Clojure相关
 ** Clojrue-mode
 #+BEGIN_SRC emacs-lisp
