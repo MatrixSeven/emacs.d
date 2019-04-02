@@ -79,8 +79,10 @@
     :init
     (projectile-mode)
     :bind
-    (:map projectile-mode-map
-          ("C-c p s s" . counsel-projectile-ag)))
+    (("C-c p p" . projectile-switch-project)
+     ("C-c p f" . projectile-find-file)
+     :map projectile-mode-map
+     ("C-c p s s" . counsel-projectile-ag)))
 #+END_SRC
 ** Counsel插件
 #+BEGIN_SRC emacs-lisp
@@ -91,6 +93,7 @@
      ("C-c G" . counsel-git-grep)
      ("C-s" . swiper)
      ("C-c m" . counsel-imenu)
+     ("C-x b" . counsel-ibuffer)
      ("C-c A" . counsel-ag)
      :map ivy-minibuffer-map
      ("<tab>" . ivy-alt-done)
@@ -344,6 +347,8 @@
     (add-hook 'cider-repl-mode-hook #'user/company-cider-repl-init)
     (add-hook 'cider-repl-mode-hook #'cider-company-enable-fuzzy-completion)
     (add-hook 'cider-mode-hook #'cider-company-enable-fuzzy-completion)
+    (add-hook 'cider-repl-mode-hook #'company-mode)
+    (add-hook 'cider-mode-hook #'company-mode)
     (setq company-idle-delay nil)
     (global-company-mode 1))
 #+END_SRC
@@ -357,6 +362,12 @@
   ;; (bind-key "M-r" 'paredit-raise-sexp parinfer-mode-map)
   ;; (add-hook 'clojure-mode-hook #'parinfer-mode)
 #+END_SRC
+
+** Cider-nrepl
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
+
 * Python相关
 ** Elpy插件
 #+BEGIN_SRC emacs-lisp
